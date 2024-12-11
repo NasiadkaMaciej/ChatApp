@@ -84,13 +84,13 @@ h3 {
 }
 
 .box ul li {
-	border: 0.01em solid #00FF00;
+	border: 1px solid #00FF00;
 	padding: 2px;
 	border-bottom: none;
 }
 
 .box ul li:last-of-type {
-	border: 0.01em solid #00FF00;
+	border: 1px solid #00FF00;
 }
 
 /* Styl dla pokoju czatu */
@@ -149,10 +149,6 @@ h3 {
 	list-style-type: none;
 	padding: 0;
 	margin-top: 10px;
-}
-
-#userList li {
-	margin: 5px 0;
 }
 
 .rightBox {

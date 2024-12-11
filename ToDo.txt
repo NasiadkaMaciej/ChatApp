@@ -1,1 +1,3 @@
-Sprawdzaj czy pokój o wprowadzonej nazwie istnieje i zmieniaj wartość przycisku na join/create 
+Check if room exists and change button value to join/create accordingly 
+Add passwords for rooms? 
+Review CSS and change to SCSS 
