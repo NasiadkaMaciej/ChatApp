@@ -1,0 +1,1 @@
+Sprawdzaj czy pokój o wprowadzonej nazwie istnieje i zmieniaj wartość przycisku na join/create 

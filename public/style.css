@@ -1,0 +1,165 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+/* Ogólny styl dla całej strony */
+body {
+	font-family: 'Courier New', monospace;
+	background-color: black;
+	color: #00FF00;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+body .container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	height: 40%;
+}
+
+h2,
+h3 {
+	text-align: center;
+	color: #00FF00;
+}
+
+/* Formularz logowania */
+#loginForm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 30vw;
+	padding: 20px;
+	border: 2px solid #00FF00;
+}
+
+#loginForm input {
+	background-color: black;
+	color: #00FF00;
+	border: 1px solid #00FF00;
+	padding: 8px;
+	margin: 10px 0;
+	width: 70%;
+}
+
+#loginForm button {
+	background-color: #00FF00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+}
+
+#loginForm button:hover {
+	background-color: #00cc00;
+}
+
+.box {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: black;
+	padding: 20px;
+	border: 2px solid #00FF00;
+}
+
+#roomListBox {
+	width: 20vw;
+}
+
+.box ul {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	list-style: none;
+	text-align: center;
+	width: 100%;
+}
+
+.box ul li {
+	border: 0.01em solid #00FF00;
+	padding: 2px;
+	border-bottom: none;
+}
+
+.box ul li:last-of-type {
+	border: 0.01em solid #00FF00;
+}
+
+/* Styl dla pokoju czatu */
+#chatRoom {
+	background-color: black;
+	color: #00FF00;
+	padding: 20px;
+	border: 2px solid #00FF00;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 40vw;
+}
+
+#chat {
+	overflow-y: scroll;
+	padding: 5px;
+	width: 100%;
+	margin-top: auto;
+}
+
+#sendMessageArea {
+	height: 10%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+#inputMessage {
+	background-color: black;
+	color: #00FF00;
+	border: 1px solid #00FF00;
+	padding: 8px;
+	width: 100%;
+}
+
+#sendMessageButton {
+	background-color: #00FF00;
+	color: black;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+}
+
+#sendMessageButton:hover {
+	background-color: #00cc00;
+}
+
+#userListBox {
+	width: 10vw;
+}
+
+#userList {
+	list-style-type: none;
+	padding: 0;
+	margin-top: 10px;
+}
+
+#userList li {
+	margin: 5px 0;
+}
+
+.rightBox {
+	border-left: 0 !important;
+}
+
+.message:nth-child(even) {
+	background-color: #00FF00;
+	color: black;
+}
