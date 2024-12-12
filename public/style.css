@@ -4,7 +4,6 @@
 	box-sizing: border-box;
 }
 
-/* Ogólny styl dla całej strony */
 body {
 	font-family: 'Courier New', monospace;
 	background-color: black;
@@ -29,7 +28,6 @@ h3 {
 	color: #00FF00;
 }
 
-/* Formularz logowania */
 #loginForm {
 	display: flex;
 	flex-direction: column;
@@ -65,8 +63,7 @@ h3 {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: black;
-	padding: 20px;
+	padding: 4%;
 	border: 2px solid #00FF00;
 }
 
@@ -93,9 +90,7 @@ h3 {
 	border: 1px solid #00FF00;
 }
 
-/* Styl dla pokoju czatu */
 #chatRoom {
-	background-color: black;
 	color: #00FF00;
 	padding: 20px;
 	border: 2px solid #00FF00;
@@ -129,6 +124,10 @@ h3 {
 	width: 100%;
 }
 
+#inputMessage:focus {
+	outline:none;
+}
+
 #sendMessageButton {
 	background-color: #00FF00;
 	color: black;
@@ -158,4 +157,42 @@ h3 {
 .message:nth-child(even) {
 	background-color: #00FF00;
 	color: black;
+}
+
+@media (max-width: 600px) {
+	body .container {
+		flex-direction: column !important;
+		height: 100vh;
+		width: 100vw;
+	}
+
+	#loginForm {
+		width: 100%;
+	}
+
+	#chatRoom {
+		width: 100%;
+		height: 80%;
+	}
+
+	#roomListBox {
+		width: 100%;
+	}
+
+	#userListBox {
+		width: 100%;
+		height: 20%;
+	}
+
+	.box {
+		padding: 2%;
+	}
+
+	.box:last-of-type {
+		border-top: none !important;
+	}
+
+	.rightBox {
+		border: 2px solid #00FF00 !important;
+	}
 }
