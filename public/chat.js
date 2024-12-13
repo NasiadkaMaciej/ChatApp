@@ -29,21 +29,16 @@ joinRoomButton.addEventListener('click', () => {
 
 // Send message
 sendMessageButton.addEventListener('click', () => {
-	const message = inputMessage.value;
-	if (message) {
-		socket.emit('sendMessage', message);
-		inputMessage.value = '';
-	}
-});
-// Send message on enter
-inputMessage.addEventListener('keypress', function (event) {
-	if (event.key === 'Enter') {
 		const message = inputMessage.value;
 		if (message) {
 			socket.emit('sendMessage', message);
 			inputMessage.value = '';
 		}
-	}
+});
+
+// Send message on enter
+inputMessage.addEventListener('keypress', function (event) {
+	if (event.key === 'Enter') sendMessageButton.click();
 });
 
 // Receive message

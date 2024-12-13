@@ -54,7 +54,7 @@ h3 {
 	cursor: pointer;
 }
 
-#loginForm button:hover {
+button:hover {
 	background-color: #00cc00;
 }
 
@@ -63,7 +63,7 @@ h3 {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 4%;
+	padding: 2%;
 	border: 2px solid #00FF00;
 }
 
@@ -136,10 +136,6 @@ h3 {
 	cursor: pointer;
 }
 
-#sendMessageButton:hover {
-	background-color: #00cc00;
-}
-
 #userListBox {
 	width: 10vw;
 }
@@ -152,6 +148,10 @@ h3 {
 
 .rightBox {
 	border-left: 0 !important;
+}
+
+.message {
+	line-break: anywhere;
 }
 
 .message:nth-child(even) {
