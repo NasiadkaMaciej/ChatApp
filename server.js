@@ -1,54 +1,113 @@
 const express = require('express');
 const http = require('http');
-const socketIo = require('socket.io');
+const WebSocket = require('ws');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+
+const wss = new WebSocket.Server({ server });
 app.set("trust proxy", true);
 
 let rooms = {};
+const clients = new Map();
 
-io.on('connection', (socket) => {
-	socket.emit('roomList', Object.keys(rooms));
+wss.on('connection', (ws) => {
+	let userData = {
+		username: null,
+		room: null
+	};
 
-	let currentRoom = null;
-	let username = null;
+	clients.set(ws, userData);
 
-	socket.on('joinRoom', (data) => {
-		username = data.username;
-		currentRoom = data.room;
+	ws.send(JSON.stringify({
+		type: 'roomList',
+		data: Object.keys(rooms)
+	}));
 
-		if (!rooms[currentRoom])
-			rooms[currentRoom] = [];
+	ws.on('message', (message) => {
+		try {
+			const msg = JSON.parse(message);
 
-		rooms[currentRoom].push(username);
-		socket.join(currentRoom);
+			switch (msg.type) {
+				// ToDo: Functions for handling messages
+				case 'joinRoom':
+					userData.username = msg.data.username;
+					userData.room = msg.data.room;
 
-		io.emit('roomList', Object.keys(rooms));
+					if (!rooms[userData.room])
+						rooms[userData.room] = [];
 
-		io.to(currentRoom).emit('message', `${username} joined the chat.`);
-		io.to(currentRoom).emit('userList', rooms[currentRoom]);
+					rooms[userData.room].push(userData.username);
 
-		socket.on('disconnect', () => {
-			if (currentRoom) {
-				rooms[currentRoom] = rooms[currentRoom].filter(user => user !== username);
-				io.to(currentRoom).emit('message', `${username} left the chat.`);
-				io.to(currentRoom).emit('userList', rooms[currentRoom]);
+					broadcastRoomList();
 
-				if (rooms[currentRoom].length === 0) {
-					delete rooms[currentRoom];
-					io.emit('roomList', Object.keys(rooms));
-				}
+					broadcastToRoom(userData.room, {
+						type: 'message',
+						data: `${userData.username} joined the chat.`
+					});
+
+					broadcastUserList(userData.room);
+					break;
+
+				case 'sendMessage':
+					if (userData.room) {
+						broadcastToRoom(userData.room, {
+							type: 'message',
+							data: `${userData.username}: ${msg.data}`
+						});
+					}
+					break;
 			}
-		});
+		} catch (e) { console.error('Error parsing message:', e); }
 	});
 
-	socket.on('sendMessage', (message) => {
-		if (currentRoom) {
-			io.to(currentRoom).emit('message', `${username}: ${message}`);
+	ws.on('close', () => {
+		const { username, room } = userData;
+
+		if (room && username && rooms[room]) {
+			rooms[room] = rooms[room].filter(user => user !== username);
+
+			broadcastToRoom(room, {
+				type: 'message',
+				data: `${username} left the chat.`
+			});
+
+			broadcastUserList(room);
+
+			// Remove empty rooms
+			if (rooms[room].length === 0) {
+				delete rooms[room];
+				broadcastRoomList();
+			}
 		}
+
+		clients.delete(ws);
 	});
+
+	function broadcastToRoom(roomName, message) {
+		clients.forEach((data, client) => {
+			if (data.room === roomName && client.readyState === WebSocket.OPEN)
+				client.send(JSON.stringify(message));
+		});
+	}
+
+	function broadcastUserList(roomName) {
+		broadcastToRoom(roomName, {
+			type: 'userList',
+			data: rooms[roomName]
+		});
+	}
+
+	function broadcastRoomList() {
+		const roomList = Object.keys(rooms);
+		wss.clients.forEach(client => {
+			if (client.readyState === WebSocket.OPEN)
+				client.send(JSON.stringify({
+					type: 'roomList',
+					data: roomList
+				}));
+		});
+	}
 });
 
 

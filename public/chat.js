@@ -1,6 +1,4 @@
-// nasiadka.pl
-
-const socket = io();
+const socket = new WebSocket('http://chat.nasiadka.pl/ws');
 
 const usernameInput = document.getElementById('username');
 const roomInput = document.getElementById('room');
@@ -10,9 +8,32 @@ const chat = document.getElementById('chat');
 const inputMessage = document.getElementById('inputMessage');
 const sendMessageButton = document.getElementById('sendMessageButton');
 const userList = document.getElementById('userList');
-const loginContainer = document.getElementById('loginContainer')
+const loginContainer = document.getElementById('loginContainer');
 const currentRoomName = document.getElementById('currentRoomName');
 const roomList = document.getElementById('roomList');
+
+// Handle incoming messages
+socket.addEventListener('message', (event) => {
+	try {
+		const message = JSON.parse(event.data);
+
+		switch (message.type) {
+			case 'message':
+				receiveMessage(message.data);
+				break;
+
+			case 'userList':
+				getUserList(message.data);
+				break;
+
+			case 'roomList':
+				getRoomList(message.data);
+				break;
+		}
+	} catch (e) {
+		console.error('Error parsing message:', e);
+	}
+});
 
 // Join room
 joinRoomButton.addEventListener('click', () => {
@@ -20,7 +41,11 @@ joinRoomButton.addEventListener('click', () => {
 	const room = roomInput.value;
 
 	if (username && room) {
-		socket.emit('joinRoom', { username, room });
+		socket.send(JSON.stringify({
+			type: 'joinRoom',
+			data: { username, room }
+		}));
+
 		loginContainer.style.display = 'none';
 		chatContainer.style.display = 'flex';
 		currentRoomName.textContent = room;
@@ -29,11 +54,14 @@ joinRoomButton.addEventListener('click', () => {
 
 // Send message
 sendMessageButton.addEventListener('click', () => {
-		const message = inputMessage.value;
-		if (message) {
-			socket.emit('sendMessage', message);
-			inputMessage.value = '';
-		}
+	const message = inputMessage.value;
+	if (message) {
+		socket.send(JSON.stringify({
+			type: 'sendMessage',
+			data: message
+		}));
+		inputMessage.value = '';
+	}
 });
 
 // Send message on enter
@@ -42,26 +70,24 @@ inputMessage.addEventListener('keypress', function (event) {
 });
 
 // Receive message
-socket.on('message', (message) => {
+function receiveMessage(message) {
 	const messageElement = document.createElement('div');
 	messageElement.classList.add('message');
 	messageElement.textContent = message;
 	chat.appendChild(messageElement);
 	chat.scrollTop = chat.scrollHeight;
-});
-
+}
 // Get user list
-socket.on('userList', (users) => {
+function getUserList(users) {
 	userList.innerHTML = '';
 	users.forEach(user => {
 		const userElement = document.createElement('li');
 		userElement.textContent = user;
 		userList.appendChild(userElement);
 	});
-});
-
+}
 // Get room list
-socket.on('roomList', (rooms) => {
+function getRoomList(rooms) {
 	roomList.innerHTML = '';
 	rooms.forEach(room => {
 		const roomElement = document.createElement('li');
@@ -72,6 +98,6 @@ socket.on('roomList', (rooms) => {
 		});
 		roomList.appendChild(roomElement);
 	});
-});
+};
 
 
