@@ -57,6 +57,9 @@ wss.on('connection', (ws) => {
 						});
 					}
 					break;
+				case 'rooms':
+					broadcastRoomList();
+					break;
 			}
 		} catch (e) { console.error('Error parsing message:', e); }
 	});

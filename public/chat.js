@@ -1,4 +1,4 @@
-const socket = new WebSocket('http://chat.nasiadka.pl/ws');
+const socket = new WebSocket('wss://chat.nasiadka.pl/ws');
 
 const usernameInput = document.getElementById('username');
 const roomInput = document.getElementById('room');

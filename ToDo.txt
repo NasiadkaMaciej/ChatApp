@@ -1,3 +1,6 @@
 Check if room exists and change button value to join/create accordingly 
 Add passwords for rooms? 
 Review CSS and change to SCSS 
+Encryption
+C++
+Admin messages

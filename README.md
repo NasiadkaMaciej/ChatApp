@@ -24,8 +24,5 @@ Chat App is a extremely simple, lightning fast chat app. It utilizes rooms to or
 ### How do I create a chat room?
 - Simply click the "Join/Create" button, name your room, and invite users to join.
 
-### How many people can join a room?
-- There is no fixed limit. Rooms can be joined by any number of people as long as space allows.
-
 ### How can I report an issue?
 If you experience any issues or have suggestions for improvements, feel free to [contact me](https://nasiadka.pl), open an issue, or submit a feature request.
