@@ -39,8 +39,6 @@ wss.on('connection', (ws) => {
 
 					rooms[userData.room].push(userData.username);
 
-					broadcastRoomList();
-
 					broadcastToRoom(userData.room, {
 						type: 'message',
 						data: `${userData.username} joined the chat.`
@@ -57,8 +55,12 @@ wss.on('connection', (ws) => {
 						});
 					}
 					break;
-				case 'rooms':
-					broadcastRoomList();
+				case 'getRoomList':
+					// Send room list only to the requesting client
+					ws.send(JSON.stringify({
+						type: 'roomList',
+						data: Object.keys(rooms)
+					}));
 					break;
 			}
 		} catch (e) { console.error('Error parsing message:', e); }
@@ -78,10 +80,8 @@ wss.on('connection', (ws) => {
 			broadcastUserList(room);
 
 			// Remove empty rooms
-			if (rooms[room].length === 0) {
+			if (rooms[room].length === 0)
 				delete rooms[room];
-				broadcastRoomList();
-			}
 		}
 
 		clients.delete(ws);
@@ -98,17 +98,6 @@ wss.on('connection', (ws) => {
 		broadcastToRoom(roomName, {
 			type: 'userList',
 			data: rooms[roomName]
-		});
-	}
-
-	function broadcastRoomList() {
-		const roomList = Object.keys(rooms);
-		wss.clients.forEach(client => {
-			if (client.readyState === WebSocket.OPEN)
-				client.send(JSON.stringify({
-					type: 'roomList',
-					data: roomList
-				}));
 		});
 	}
 });

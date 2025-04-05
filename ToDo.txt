@@ -4,3 +4,4 @@ Review CSS and change to SCSS
 Encryption
 C++
 Admin messages
+Broadcast rooms list for JS clients

@@ -35,6 +35,11 @@ socket.addEventListener('message', (event) => {
 	}
 });
 
+// Request room list when connection is established
+socket.addEventListener('open', () => {
+	requestRoomList();
+});
+
 // Join room
 joinRoomButton.addEventListener('click', () => {
 	const username = usernameInput.value;
